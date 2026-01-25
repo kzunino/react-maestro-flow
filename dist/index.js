@@ -297,6 +297,10 @@ function useWizardSkip() {
   const { skipCurrentPage } = useWizardContext();
   return skipCurrentPage;
 }
+function useWizardUrlParams() {
+  const { getUrlParam, getAllUrlParams, urlParams } = useWizardContext();
+  return { getUrlParam, getAllUrlParams, urlParams };
+}
 
 // src/wizard/Presenter.tsx
 import { lazy, Suspense, useMemo } from "react";
@@ -749,6 +753,7 @@ function useUrlParams(adapter = browserUrlParamsAdapter) {
     if (typeof window === "undefined") {
       return;
     }
+    setParams(adapter.getAllParams());
     const handlePopState = () => {
       setParams(adapter.getAllParams());
     };
@@ -1103,7 +1108,10 @@ function Wizard({ graph, config = {} }) {
       hasNext,
       hasPrevious,
       skipCurrentPage,
-      completeWizard
+      completeWizard,
+      getUrlParam: urlParams.getParam,
+      getAllUrlParams: urlParams.getAllParams,
+      urlParams: urlParams.params
     }),
     [
       currentPage,
@@ -1119,7 +1127,8 @@ function Wizard({ graph, config = {} }) {
       hasNext,
       hasPrevious,
       skipCurrentPage,
-      completeWizard
+      completeWizard,
+      urlParams
     ]
   );
   const currentNode = getCurrentNode();
@@ -1172,6 +1181,7 @@ export {
   useWizardSkip,
   useWizardState,
   useWizardStateBatch,
+  useWizardUrlParams,
   validateGraph
 };
 //# sourceMappingURL=index.js.map

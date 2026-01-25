@@ -156,6 +156,19 @@ type WizardContextValue = {
      * The user is responsible for handling navigation/redirect after calling this
      */
     completeWizard: () => void;
+    /**
+     * Get a single URL parameter (query or path, depending on adapter).
+     * Use this to read arbitrary params like id, type, someOtherOptions, etc.
+     */
+    getUrlParam: (key: string) => string | null;
+    /**
+     * Get all URL parameters as a record.
+     */
+    getAllUrlParams: () => Record<string, string>;
+    /**
+     * Reactive snapshot of all URL params (updates on navigation).
+     */
+    urlParams: Record<string, string>;
 };
 
 /**
@@ -266,6 +279,15 @@ declare function useWizardNode(page: string): WizardNode | undefined;
  * Call this from within a page component after determining the page should be skipped
  */
 declare function useWizardSkip(): () => void;
+/**
+ * Hook to access arbitrary URL params (query or path, depending on config).
+ * Use this to read params like id, type, someOtherOptions, etc.
+ */
+declare function useWizardUrlParams(): {
+    getUrlParam: (key: string) => string | null;
+    getAllUrlParams: () => Record<string, string>;
+    urlParams: Record<string, string>;
+};
 
 /**
  * Props for the Presenter component
@@ -552,4 +574,4 @@ declare const WizardContext: react.Context<WizardContextValue | null>;
  */
 declare function useWizardContext(): WizardContextValue;
 
-export { type JSONSchema, type NextPageResolver, type PageStateType, type PathConfig, Presenter, type PresenterProps, type SchemaToType, type UrlParamsAdapter, Wizard, type WizardConfig, WizardContext, type WizardContextValue, type WizardGraph, type WizardNode, type WizardProps, type WizardState, WizardStateManager, createPathParamsAdapter, createPathParamsAdapterFromProps, createWizardGraph, createWizardGraphFromNodes, defaultStateManager, definePageSchema, getAllNextPages, getNextNonSkippedPage, getNextPage, getNode, getPagesInOrder, getPreviousNonSkippedPage, getPreviousPage, registerNode, resolveNextPage, shouldSkipStep, useUrlParams, useWizard, useWizardContext, useWizardCurrentNode, useWizardNavigation, useWizardNode, useWizardPageState, useWizardPageStateByPage, useWizardSkip, useWizardState, useWizardStateBatch, validateGraph };
+export { type JSONSchema, type NextPageResolver, type PageStateType, type PathConfig, Presenter, type PresenterProps, type SchemaToType, type UrlParamsAdapter, Wizard, type WizardConfig, WizardContext, type WizardContextValue, type WizardGraph, type WizardNode, type WizardProps, type WizardState, WizardStateManager, createPathParamsAdapter, createPathParamsAdapterFromProps, createWizardGraph, createWizardGraphFromNodes, defaultStateManager, definePageSchema, getAllNextPages, getNextNonSkippedPage, getNextPage, getNode, getPagesInOrder, getPreviousNonSkippedPage, getPreviousPage, registerNode, resolveNextPage, shouldSkipStep, useUrlParams, useWizard, useWizardContext, useWizardCurrentNode, useWizardNavigation, useWizardNode, useWizardPageState, useWizardPageStateByPage, useWizardSkip, useWizardState, useWizardStateBatch, useWizardUrlParams, validateGraph };

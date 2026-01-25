@@ -51,6 +51,7 @@ __export(index_exports, {
   useWizardSkip: () => useWizardSkip,
   useWizardState: () => useWizardState,
   useWizardStateBatch: () => useWizardStateBatch,
+  useWizardUrlParams: () => useWizardUrlParams,
   validateGraph: () => validateGraph
 });
 module.exports = __toCommonJS(index_exports);
@@ -353,6 +354,10 @@ function useWizardNode(page) {
 function useWizardSkip() {
   const { skipCurrentPage } = useWizardContext();
   return skipCurrentPage;
+}
+function useWizardUrlParams() {
+  const { getUrlParam, getAllUrlParams, urlParams } = useWizardContext();
+  return { getUrlParam, getAllUrlParams, urlParams };
 }
 
 // src/wizard/Presenter.tsx
@@ -806,6 +811,7 @@ function useUrlParams(adapter = browserUrlParamsAdapter) {
     if (typeof window === "undefined") {
       return;
     }
+    setParams(adapter.getAllParams());
     const handlePopState = () => {
       setParams(adapter.getAllParams());
     };
@@ -1160,7 +1166,10 @@ function Wizard({ graph, config = {} }) {
       hasNext,
       hasPrevious,
       skipCurrentPage,
-      completeWizard
+      completeWizard,
+      getUrlParam: urlParams.getParam,
+      getAllUrlParams: urlParams.getAllParams,
+      urlParams: urlParams.params
     }),
     [
       currentPage,
@@ -1176,7 +1185,8 @@ function Wizard({ graph, config = {} }) {
       hasNext,
       hasPrevious,
       skipCurrentPage,
-      completeWizard
+      completeWizard,
+      urlParams
     ]
   );
   const currentNode = getCurrentNode();
@@ -1230,6 +1240,7 @@ function Wizard({ graph, config = {} }) {
   useWizardSkip,
   useWizardState,
   useWizardStateBatch,
+  useWizardUrlParams,
   validateGraph
 });
 //# sourceMappingURL=index.cjs.map
