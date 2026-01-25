@@ -1,13 +1,11 @@
-import { useWizard, useWizardNavigation, useWizardState } from "react-maestro";
+import { useWizard } from "react-maestro";
 import { Button } from "../components/Button";
 import { PageLayout } from "../components/PageLayout";
 
 export default function PageE() {
-	const { goToNext, goToPrevious } = useWizard();
-	const { currentPage } = useWizardNavigation();
-	const [premiumFeature, setPremiumFeature] =
-		useWizardState<string>("premiumFeature");
-	const [email] = useWizardState<string>("email");
+	const { goToNext, goToPrevious, currentPage, stateKey } = useWizard();
+	const [premiumFeature, setPremiumFeature] = stateKey<string>("premiumFeature");
+	const [email] = stateKey<string>("email");
 
 	return (
 		<PageLayout>

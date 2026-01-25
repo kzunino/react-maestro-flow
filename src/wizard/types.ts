@@ -197,3 +197,21 @@ export type WizardContextValue = {
 	 */
 	urlParams: Record<string, string>;
 };
+
+/**
+ * Return type of useWizard().
+ * Extends WizardContextValue with stateKey helper and hasNext/hasPrevious as booleans.
+ */
+export type UseWizardReturn = Omit<
+	WizardContextValue,
+	"hasNext" | "hasPrevious"
+> & {
+	/** Get [value, setValue] for a state key. Replaces useWizardState(key). */
+	stateKey: <T = unknown>(
+		key: string,
+	) => readonly [T | undefined, (value: T) => void];
+	/** Whether there is a next page (resolved boolean). */
+	hasNext: boolean;
+	/** Whether there is a previous page (resolved boolean). */
+	hasPrevious: boolean;
+};

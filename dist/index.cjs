@@ -28,7 +28,6 @@ __export(index_exports, {
   createPathParamsAdapterFromProps: () => createPathParamsAdapterFromProps,
   createWizardGraph: () => createWizardGraph,
   createWizardGraphFromNodes: () => createWizardGraphFromNodes,
-  createWizardNode: () => createWizardNode,
   defaultStateManager: () => defaultStateManager,
   getAllNextPages: () => getAllNextPages,
   getNextNonSkippedPage: () => getNextNonSkippedPage,
@@ -43,15 +42,6 @@ __export(index_exports, {
   useUrlParams: () => useUrlParams,
   useWizard: () => useWizard,
   useWizardContext: () => useWizardContext,
-  useWizardCurrentNode: () => useWizardCurrentNode,
-  useWizardNavigation: () => useWizardNavigation,
-  useWizardNode: () => useWizardNode,
-  useWizardPageState: () => useWizardPageState,
-  useWizardPageStateByPage: () => useWizardPageStateByPage,
-  useWizardSkip: () => useWizardSkip,
-  useWizardState: () => useWizardState,
-  useWizardStateBatch: () => useWizardStateBatch,
-  useWizardUrlParams: () => useWizardUrlParams,
   validateGraph: () => validateGraph
 });
 module.exports = __toCommonJS(index_exports);
@@ -280,84 +270,21 @@ function useWizardContext() {
 
 // src/wizard/hooks.ts
 function useWizard() {
-  return useWizardContext();
-}
-function useWizardState(key) {
-  const { state, updateState } = useWizardContext();
-  const value = state[key] ?? void 0;
-  const setValue = (0, import_react2.useCallback)(
-    (newValue) => {
-      updateState(key, newValue);
+  const ctx = useWizardContext();
+  const stateKey = (0, import_react2.useCallback)(
+    (key) => {
+      const value = ctx.state[key] ?? void 0;
+      const setValue = (newValue) => ctx.updateState(key, newValue);
+      return [value, setValue];
     },
-    [key, updateState]
+    [ctx.state, ctx.updateState]
   );
-  return [value, setValue];
-}
-function useWizardPageState() {
-  const { state, updateStateBatch } = useWizardContext();
-  const pageState = state || {};
-  const setPageState = (0, import_react2.useCallback)(
-    (updates) => {
-      updateStateBatch(updates);
-    },
-    [updateStateBatch]
-  );
-  return [pageState, setPageState];
-}
-function useWizardStateBatch(keys) {
-  const { state, updateStateBatch } = useWizardContext();
-  const values = (0, import_react2.useCallback)(() => {
-    const result = {};
-    for (const key of keys) {
-      result[key] = state[key];
-    }
-    return result;
-  }, [keys, state]);
-  const setValues = (0, import_react2.useCallback)(
-    (updates) => {
-      updateStateBatch(updates);
-    },
-    [updateStateBatch]
-  );
-  return [values, setValues];
-}
-function useWizardNavigation() {
-  const {
-    goToNext,
-    goToPrevious,
-    goToPage,
-    hasNext,
-    hasPrevious,
-    currentPage
-  } = useWizardContext();
   return {
-    goToNext,
-    goToPrevious,
-    goToPage,
-    hasNext: hasNext(),
-    hasPrevious: hasPrevious(),
-    currentPage
+    ...ctx,
+    stateKey,
+    hasNext: ctx.hasNext(),
+    hasPrevious: ctx.hasPrevious()
   };
-}
-function useWizardPageStateByPage(page) {
-  const { getPageState } = useWizardContext();
-  return getPageState(page);
-}
-function useWizardCurrentNode() {
-  const { getCurrentNode } = useWizardContext();
-  return getCurrentNode();
-}
-function useWizardNode(page) {
-  const { getNode: getNode2 } = useWizardContext();
-  return getNode2(page);
-}
-function useWizardSkip() {
-  const { skipCurrentPage } = useWizardContext();
-  return skipCurrentPage;
-}
-function useWizardUrlParams() {
-  const { getUrlParam, getAllUrlParams, urlParams } = useWizardContext();
-  return { getUrlParam, getAllUrlParams, urlParams };
 }
 
 // src/wizard/Presenter.tsx
@@ -589,11 +516,6 @@ function createPathParamsAdapterFromProps(_pathParams, config) {
       window.history.replaceState({}, "", newPath);
     }
   };
-}
-
-// src/wizard/schema-types.ts
-function createWizardNode(node) {
-  return node;
 }
 
 // src/wizard/state.ts
@@ -1217,7 +1139,6 @@ function Wizard({ graph, config = {} }) {
   createPathParamsAdapterFromProps,
   createWizardGraph,
   createWizardGraphFromNodes,
-  createWizardNode,
   defaultStateManager,
   getAllNextPages,
   getNextNonSkippedPage,
@@ -1232,15 +1153,6 @@ function Wizard({ graph, config = {} }) {
   useUrlParams,
   useWizard,
   useWizardContext,
-  useWizardCurrentNode,
-  useWizardNavigation,
-  useWizardNode,
-  useWizardPageState,
-  useWizardPageStateByPage,
-  useWizardSkip,
-  useWizardState,
-  useWizardStateBatch,
-  useWizardUrlParams,
   validateGraph
 });
 //# sourceMappingURL=index.cjs.map

@@ -222,84 +222,21 @@ function useWizardContext() {
 
 // src/wizard/hooks.ts
 function useWizard() {
-  return useWizardContext();
-}
-function useWizardState(key) {
-  const { state, updateState } = useWizardContext();
-  const value = state[key] ?? void 0;
-  const setValue = useCallback(
-    (newValue) => {
-      updateState(key, newValue);
+  const ctx = useWizardContext();
+  const stateKey = useCallback(
+    (key) => {
+      const value = ctx.state[key] ?? void 0;
+      const setValue = (newValue) => ctx.updateState(key, newValue);
+      return [value, setValue];
     },
-    [key, updateState]
+    [ctx.state, ctx.updateState]
   );
-  return [value, setValue];
-}
-function useWizardPageState() {
-  const { state, updateStateBatch } = useWizardContext();
-  const pageState = state || {};
-  const setPageState = useCallback(
-    (updates) => {
-      updateStateBatch(updates);
-    },
-    [updateStateBatch]
-  );
-  return [pageState, setPageState];
-}
-function useWizardStateBatch(keys) {
-  const { state, updateStateBatch } = useWizardContext();
-  const values = useCallback(() => {
-    const result = {};
-    for (const key of keys) {
-      result[key] = state[key];
-    }
-    return result;
-  }, [keys, state]);
-  const setValues = useCallback(
-    (updates) => {
-      updateStateBatch(updates);
-    },
-    [updateStateBatch]
-  );
-  return [values, setValues];
-}
-function useWizardNavigation() {
-  const {
-    goToNext,
-    goToPrevious,
-    goToPage,
-    hasNext,
-    hasPrevious,
-    currentPage
-  } = useWizardContext();
   return {
-    goToNext,
-    goToPrevious,
-    goToPage,
-    hasNext: hasNext(),
-    hasPrevious: hasPrevious(),
-    currentPage
+    ...ctx,
+    stateKey,
+    hasNext: ctx.hasNext(),
+    hasPrevious: ctx.hasPrevious()
   };
-}
-function useWizardPageStateByPage(page) {
-  const { getPageState } = useWizardContext();
-  return getPageState(page);
-}
-function useWizardCurrentNode() {
-  const { getCurrentNode } = useWizardContext();
-  return getCurrentNode();
-}
-function useWizardNode(page) {
-  const { getNode: getNode2 } = useWizardContext();
-  return getNode2(page);
-}
-function useWizardSkip() {
-  const { skipCurrentPage } = useWizardContext();
-  return skipCurrentPage;
-}
-function useWizardUrlParams() {
-  const { getUrlParam, getAllUrlParams, urlParams } = useWizardContext();
-  return { getUrlParam, getAllUrlParams, urlParams };
 }
 
 // src/wizard/Presenter.tsx
@@ -531,11 +468,6 @@ function createPathParamsAdapterFromProps(_pathParams, config) {
       window.history.replaceState({}, "", newPath);
     }
   };
-}
-
-// src/wizard/schema-types.ts
-function createWizardNode(node) {
-  return node;
 }
 
 // src/wizard/state.ts
@@ -1158,7 +1090,6 @@ export {
   createPathParamsAdapterFromProps,
   createWizardGraph,
   createWizardGraphFromNodes,
-  createWizardNode,
   defaultStateManager,
   getAllNextPages,
   getNextNonSkippedPage,
@@ -1173,15 +1104,6 @@ export {
   useUrlParams,
   useWizard,
   useWizardContext,
-  useWizardCurrentNode,
-  useWizardNavigation,
-  useWizardNode,
-  useWizardPageState,
-  useWizardPageStateByPage,
-  useWizardSkip,
-  useWizardState,
-  useWizardStateBatch,
-  useWizardUrlParams,
   validateGraph
 };
 //# sourceMappingURL=index.js.map

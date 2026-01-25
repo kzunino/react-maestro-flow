@@ -1,14 +1,12 @@
-import { useWizard, useWizardState } from "react-maestro";
+import { useWizard } from "react-maestro";
 import { Button } from "../components/Button";
-import { PageLayout } from "../components/PageLayout.tsx";
+import { PageLayout } from "../components/PageLayout";
 
 export default function PageA() {
-	const { goToNext } = useWizard();
-
-	// Type-safe state hooks for each field
-	const [name, setName] = useWizardState<string>("name");
-	const [age, setAge] = useWizardState<number>("age");
-	const [address, setAddress] = useWizardState<string>("address");
+	const { goToNext, stateKey } = useWizard();
+	const [name, setName] = stateKey<string>("name");
+	const [age, setAge] = stateKey<number>("age");
+	const [address, setAddress] = stateKey<string>("address");
 
 	return (
 		<PageLayout>

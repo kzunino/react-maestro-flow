@@ -17,18 +17,7 @@ export {
 	validateGraph,
 } from "@/wizard/graph";
 // Hooks
-export {
-	useWizard,
-	useWizardCurrentNode,
-	useWizardNavigation,
-	useWizardNode,
-	useWizardPageState,
-	useWizardPageStateByPage,
-	useWizardSkip,
-	useWizardState,
-	useWizardStateBatch,
-	useWizardUrlParams,
-} from "@/wizard/hooks";
+export { useWizard } from "@/wizard/hooks";
 // Presenter
 export {
 	Presenter,
@@ -48,6 +37,7 @@ export {
 export type {
 	NextPageResolver,
 	UrlParamsAdapter,
+	UseWizardReturn,
 	WizardContextValue,
 	WizardGraph,
 	WizardNode,

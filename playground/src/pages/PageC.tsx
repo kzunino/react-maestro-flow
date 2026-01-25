@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useWizard, useWizardSkip } from "react-maestro";
+import { useWizard } from "react-maestro";
 import { Button } from "../components/Button";
 import { PageLayout } from "../components/PageLayout";
 
 export default function PageC() {
-	const { goToNext, goToPrevious } = useWizard();
-	const skipCurrentPage = useWizardSkip();
+	const { goToNext, goToPrevious, skipCurrentPage } = useWizard();
 	const [isChecking, setIsChecking] = useState(true);
 
 	// Example: Check if page should be skipped after loading (e.g., API call)

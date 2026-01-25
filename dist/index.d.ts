@@ -167,6 +167,18 @@ type WizardContextValue = {
      */
     urlParams: Record<string, string>;
 };
+/**
+ * Return type of useWizard().
+ * Extends WizardContextValue with stateKey helper and hasNext/hasPrevious as booleans.
+ */
+type UseWizardReturn = Omit<WizardContextValue, "hasNext" | "hasPrevious"> & {
+    /** Get [value, setValue] for a state key. Replaces useWizardState(key). */
+    stateKey: <T = unknown>(key: string) => readonly [T | undefined, (value: T) => void];
+    /** Whether there is a next page (resolved boolean). */
+    hasNext: boolean;
+    /** Whether there is a previous page (resolved boolean). */
+    hasPrevious: boolean;
+};
 
 /**
  * Creates a new empty wizard graph
@@ -229,62 +241,15 @@ declare function validateGraph(graph: WizardGraph): {
 declare function getPagesInOrder(graph: WizardGraph): string[];
 
 /**
- * Hook to access the wizard context
- * Provides all wizard functionality to child components
+ * Single hook to access all wizard functionality.
+ * Use one import and destructure what you need.
+ *
+ * @example
+ * const { goToNext, goToPrevious, stateKey, currentPage, hasNext, hasPrevious } = useWizard();
+ * const [name, setName] = stateKey("name");
+ * const [email, setEmail] = stateKey("email");
  */
-declare function useWizard(): WizardContextValue;
-/**
- * Hook to get and update state for the current wizard step
- */
-declare function useWizardState<T = unknown>(key: string): readonly [NonNullable<T> | undefined, (newValue: T) => void];
-/**
- * Hook to get and update all state for the current wizard step
- * Returns the entire page state object with proper typing
- */
-declare function useWizardPageState<T extends Record<string, unknown> = Record<string, unknown>>(): readonly [T, (updates: Partial<T>) => void];
-/**
- * Hook to get multiple state values at once
- */
-declare function useWizardStateBatch(keys: string[]): readonly [() => Record<string, unknown>, (updates: Record<string, unknown>) => void];
-/**
- * Hook for wizard navigation helpers
- */
-declare function useWizardNavigation(): {
-    goToNext: () => void;
-    goToPrevious: () => void;
-    goToPage: (page: string) => void;
-    hasNext: boolean;
-    hasPrevious: boolean;
-    currentPage: string | null;
-};
-/**
- * Hook to get state for a specific page (not just current)
- * @deprecated Use useWizardPageState() for current page or getPageState() directly
- */
-declare function useWizardPageStateByPage(page: string): WizardState;
-/**
- * Hook to get the current node definition
- */
-declare function useWizardCurrentNode(): WizardNode<WizardState> | undefined;
-/**
- * Hook to get a node by page identifier
- */
-declare function useWizardNode(page: string): WizardNode<WizardState> | undefined;
-/**
- * Hook to skip the current page and navigate to the next non-skipped page
- * This is useful for conditional skipping based on async checks (API calls, etc.)
- * Call this from within a page component after determining the page should be skipped
- */
-declare function useWizardSkip(): () => void;
-/**
- * Hook to access arbitrary URL params (query or path, depending on config).
- * Use this to read params like id, type, someOtherOptions, etc.
- */
-declare function useWizardUrlParams(): {
-    getUrlParam: (key: string) => string | null;
-    getAllUrlParams: () => Record<string, string>;
-    urlParams: Record<string, string>;
-};
+declare function useWizard(): UseWizardReturn;
 
 /**
  * Props for the Presenter component
@@ -386,29 +351,6 @@ declare function createPathParamsAdapter(config: PathConfig): UrlParamsAdapter;
  * ```
  */
 declare function createPathParamsAdapterFromProps(_pathParams: Record<string, string | string[]> | Promise<Record<string, string | string[]>>, config: PathConfig): UrlParamsAdapter;
-
-/**
- * Helper to create a wizard node with typed state from a plain object.
- * The state type is inferred from the stateContext object.
- *
- * @example
- * const node = createWizardNode({
- *   page: "page1",
- *   stateContext: { name: "", age: 0 },
- *   next: (state) => {
- *     // state.name and state.age are properly typed
- *     return "page2";
- *   },
- * });
- */
-declare function createWizardNode<TStateContext extends Record<string, unknown>, TNode extends {
-    page: string;
-    form?: Record<string, unknown>;
-    stateContext?: TStateContext;
-    next?: (state: TStateContext & WizardState) => string | string[] | null;
-    previous?: string;
-    shouldSkip?: (state: TStateContext & WizardState) => boolean;
-}>(node: TNode): WizardNode;
 
 /**
  * Manager for wizard state stored in session storage
@@ -547,4 +489,4 @@ declare const WizardContext: react.Context<WizardContextValue | null>;
  */
 declare function useWizardContext(): WizardContextValue;
 
-export { type NextPageResolver, type PathConfig, Presenter, type PresenterProps, type UrlParamsAdapter, Wizard, type WizardConfig, WizardContext, type WizardContextValue, type WizardGraph, type WizardNode, type WizardProps, type WizardState, WizardStateManager, createPathParamsAdapter, createPathParamsAdapterFromProps, createWizardGraph, createWizardGraphFromNodes, createWizardNode, defaultStateManager, getAllNextPages, getNextNonSkippedPage, getNextPage, getNode, getPagesInOrder, getPreviousNonSkippedPage, getPreviousPage, registerNode, resolveNextPage, shouldSkipStep, useUrlParams, useWizard, useWizardContext, useWizardCurrentNode, useWizardNavigation, useWizardNode, useWizardPageState, useWizardPageStateByPage, useWizardSkip, useWizardState, useWizardStateBatch, useWizardUrlParams, validateGraph };
+export { type NextPageResolver, type PathConfig, Presenter, type PresenterProps, type UrlParamsAdapter, type UseWizardReturn, Wizard, type WizardConfig, WizardContext, type WizardContextValue, type WizardGraph, type WizardNode, type WizardProps, type WizardState, WizardStateManager, createPathParamsAdapter, createPathParamsAdapterFromProps, createWizardGraph, createWizardGraphFromNodes, defaultStateManager, getAllNextPages, getNextNonSkippedPage, getNextPage, getNode, getPagesInOrder, getPreviousNonSkippedPage, getPreviousPage, registerNode, resolveNextPage, shouldSkipStep, useUrlParams, useWizard, useWizardContext, validateGraph };

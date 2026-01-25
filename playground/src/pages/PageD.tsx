@@ -1,13 +1,12 @@
-import { useWizard, useWizardNavigation, useWizardState } from "react-maestro";
+import { useWizard } from "react-maestro";
 import { Button } from "../components/Button";
 import { PageLayout } from "../components/PageLayout";
 
 export default function PageD() {
-	const { goToPrevious } = useWizard();
-	const { currentPage } = useWizardNavigation();
-	const [name] = useWizardState<string>("name");
-	const [email] = useWizardState<string>("email");
-	const [confirm, setConfirm] = useWizardState<boolean>("confirm");
+	const { goToPrevious, currentPage, stateKey } = useWizard();
+	const [name] = stateKey<string>("name");
+	const [email] = stateKey<string>("email");
+	const [confirm, setConfirm] = stateKey<boolean>("confirm");
 
 	return (
 		<PageLayout>

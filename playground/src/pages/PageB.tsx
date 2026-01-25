@@ -1,13 +1,12 @@
-import { useWizard, useWizardNavigation, useWizardState } from "react-maestro";
+import { useWizard } from "react-maestro";
 import { Button } from "../components/Button";
 import { PageLayout } from "../components/PageLayout";
 
 export default function PageB() {
-	const { goToNext, goToPrevious } = useWizard();
-	const { currentPage } = useWizardNavigation();
-	const [email, setEmail] = useWizardState<string>("email");
-	const [userType, setUserType] = useWizardState<string>("userType");
-	const [name] = useWizardState<string>("name");
+	const { goToNext, goToPrevious, currentPage, stateKey } = useWizard();
+	const [email, setEmail] = stateKey<string>("email");
+	const [userType, setUserType] = stateKey<string>("userType");
+	const [name] = stateKey<string>("name");
 
 	return (
 		<PageLayout>
