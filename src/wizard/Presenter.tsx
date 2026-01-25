@@ -1,15 +1,5 @@
-"use client";
-
 import { lazy, Suspense, useMemo } from "react";
-import type { WizardNode } from "@/wizard/types";
-
-const PageA = lazy(() => import("@/wizard/test/pages/PageA"));
-const PageB = lazy(() => import("@/wizard/test/pages/PageB"));
-const PageC = lazy(() => import("@/wizard/test/pages/PageC"));
-const PageD = lazy(() => import("@/wizard/test/pages/PageD"));
-const PageE = lazy(() => import("@/wizard/test/pages/PageE"));
-const Expired = lazy(() => import("@/wizard/test/pages/Expired"));
-const PageNotFound = lazy(() => import("@/wizard/test/pages/PageNotFound"));
+import type { ComponentLoader, WizardNode } from "@/wizard/types";
 
 /**
  * Props for the Presenter component
@@ -24,6 +14,12 @@ export type PresenterProps = {
 	 * Current node definition
 	 */
 	node: WizardNode | undefined;
+
+	/**
+	 * Map of page identifiers to component loaders
+	 * Each loader should return a promise that resolves to a component with a default export
+	 */
+	componentLoaders: Map<string, ComponentLoader>;
 
 	/**
 	 * Optional fallback component to show while loading
@@ -48,41 +44,31 @@ const DefaultLoadingFallback = () => (
 /**
  * Presenter component that dynamically loads and renders wizard pages
  * Uses React.lazy for code splitting and tree shaking
- * Uses a switch statement to map page identifiers to components
+ * Dynamically loads components based on the provided componentLoaders map
  */
 export function Presenter({
 	page,
 	node,
+	componentLoaders,
 	loadingFallback = <DefaultLoadingFallback />,
 	unknownPageFallback,
 }: PresenterProps) {
-	// Memoize the component selection to prevent remounting on every render
+	// Memoize the lazy-loaded component to prevent remounting on every render
 	const Component = useMemo(() => {
 		if (!page) {
 			return null;
 		}
 
-		switch (page) {
-			case "pageA":
-				return PageA;
-			case "pageB":
-				return PageB;
-			case "pageC":
-				return PageC;
-			case "pageD":
-				return PageD;
-			case "pageE":
-				return PageE;
-			case "__expired__":
-				return Expired;
-			case "__notfound__":
-				return PageNotFound;
-			default:
-				return null;
+		const loader = componentLoaders.get(page);
+		if (!loader) {
+			return null;
 		}
-	}, [page]);
 
-	// Handle expired and not found states - don't require a node for these cases
+		// Use React.lazy to wrap the loader function
+		return lazy(loader);
+	}, [page, componentLoaders]);
+
+	// Handle special states (expired, not found) - don't require a node for these cases
 	if (page === "__expired__" || page === "__notfound__") {
 		if (!Component) {
 			return null;

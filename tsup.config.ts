@@ -9,4 +9,6 @@ export default defineConfig({
 	clean: true,
 	external: ['react', 'react-dom'],
 	tsconfig: './tsconfig.json',
+	// Exclude test files from the build
+	noExternal: [],
 });

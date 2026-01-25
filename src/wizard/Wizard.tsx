@@ -1,4 +1,3 @@
-"use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -10,6 +9,7 @@ import {
 import { Presenter } from "@/wizard/Presenter";
 import { defaultStateManager, type WizardStateManager } from "@/wizard/state";
 import type {
+	ComponentLoader,
 	UrlParamsAdapter,
 	WizardContextValue,
 	WizardGraph,
@@ -55,6 +55,12 @@ export type WizardConfig = {
 	 * Optional callback when page changes
 	 */
 	onPageChange?: (page: string | null, previousPage: string | null) => void;
+
+	/**
+	 * Map of page identifiers to component loaders
+	 * Each loader should return a promise that resolves to a component with a default export
+	 */
+	componentLoaders?: Map<string, ComponentLoader>;
 };
 
 /**
@@ -94,7 +100,17 @@ export function Wizard({ graph, config = {} }: WizardProps) {
 		loadingFallback,
 		unknownPageFallback,
 		onPageChange,
+		componentLoaders,
 	} = config;
+
+	// Build component loaders map from graph if not provided
+	const componentLoadersMap = useMemo(() => {
+		if (componentLoaders) {
+			return componentLoaders;
+		}
+		// If not provided, create an empty map (users must provide componentLoaders)
+		return new Map<string, ComponentLoader>();
+	}, [componentLoaders]);
 	const urlParams = useUrlParams(urlParamsAdapter);
 
 	// Get or generate UUID (last 5 digits)
@@ -583,6 +599,7 @@ export function Wizard({ graph, config = {} }: WizardProps) {
 			<Presenter
 				page={currentPage}
 				node={currentNode}
+				componentLoaders={componentLoadersMap}
 				loadingFallback={loadingFallback}
 				unknownPageFallback={unknownPageFallback}
 			/>
