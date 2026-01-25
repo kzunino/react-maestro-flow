@@ -1,0 +1,30 @@
+{
+	"name": "react-maestro",
+	"version": "0.0.1",
+	"description": "Graph-based flow orchestration for React. Build branching, stateful user flows from a single entry point.",
+	"main": "dist/index.cjs",
+	"module": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"react",
+		"library"
+	],
+	"author": "",
+	"license": "ISC",
+	"peerDependencies": {
+		"react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+		"react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+	},
+	"devDependencies": {
+		"tsup": "^8.5.1"
+	},
+	"type": "module"
+}
