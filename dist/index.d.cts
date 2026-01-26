@@ -103,9 +103,19 @@ type WizardContextValue = {
      */
     goToPrevious: () => void;
     /**
-     * Navigate to a specific page
+     * Navigate to a specific page and preserve history.
+     * Pushes a new entry, so back navigation returns to the page you left.
+     * Use for normal "go to any node" navigation (e.g. after API) when you want
+     * the user to be able to go back.
      */
     goToPage: (page: string) => void;
+    /**
+     * Skip to a specific page without adding the current page to history.
+     * Uses replace instead of push, so back navigation won’t return to the page you left.
+     * Use when jumping to a node based on async results (e.g. API response) rather than
+     * following the normal next/previous flow.
+     */
+    skipToPage: (page: string) => void;
     /**
      * Update state for the current step
      */
@@ -237,9 +247,9 @@ declare function getPagesInOrder(graph: WizardGraph): string[];
  * Use one import and destructure what you need.
  *
  * @example
- * const { goToNext, goToPrevious, stateKey, currentPage, hasNext, hasPrevious } = useWizard();
+ * const { goToNext, goToPrevious, goToPage, skipToPage, stateKey, currentPage, hasNext, hasPrevious } = useWizard();
  * const [name, setName] = stateKey("name");
- * const [email, setEmail] = stateKey("email");
+ * // goToPage(page) — jump to any node, preserve history (push). skipToPage(page) — same, replace (no back).
  */
 declare function useWizard(): UseWizardReturn;
 

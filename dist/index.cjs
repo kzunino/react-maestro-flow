@@ -1012,6 +1012,19 @@ function Wizard({ graph, config = {} }) {
     },
     [graph, currentPage, onPageChange, pageParamName, urlParams]
   );
+  const skipToPage = (0, import_react5.useCallback)(
+    (page) => {
+      if (!graph.nodes.has(page)) {
+        console.warn(`Page "${page}" does not exist in graph`);
+        return;
+      }
+      const previousPage = currentPage;
+      setCurrentPage(page);
+      urlParams.replaceParam(pageParamName, page);
+      onPageChange?.(page, previousPage);
+    },
+    [graph, currentPage, onPageChange, pageParamName, urlParams]
+  );
   const skipCurrentPage = (0, import_react5.useCallback)(() => {
     if (!currentPage) {
       return;
@@ -1089,6 +1102,7 @@ function Wizard({ graph, config = {} }) {
       goToNext,
       goToPrevious,
       goToPage,
+      skipToPage,
       updateState,
       updateStateBatch,
       getPageState,
@@ -1108,6 +1122,7 @@ function Wizard({ graph, config = {} }) {
       goToNext,
       goToPrevious,
       goToPage,
+      skipToPage,
       updateState,
       updateStateBatch,
       getPageState,

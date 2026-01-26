@@ -440,6 +440,22 @@ export function Wizard({ graph, config = {} }: WizardProps) {
 		[graph, currentPage, onPageChange, pageParamName, urlParams],
 	);
 
+	const skipToPage = useCallback(
+		(page: string) => {
+			if (!graph.nodes.has(page)) {
+				console.warn(`Page "${page}" does not exist in graph`);
+				return;
+			}
+
+			const previousPage = currentPage;
+
+			setCurrentPage(page);
+			urlParams.replaceParam(pageParamName, page);
+			onPageChange?.(page, previousPage);
+		},
+		[graph, currentPage, onPageChange, pageParamName, urlParams],
+	);
+
 	// Skip current page and navigate to next non-skipped page
 	// This can be called from within a page component after loading
 	const skipCurrentPage = useCallback(() => {
@@ -544,6 +560,7 @@ export function Wizard({ graph, config = {} }: WizardProps) {
 			goToNext,
 			goToPrevious,
 			goToPage,
+			skipToPage,
 			updateState,
 			updateStateBatch,
 			getPageState,
@@ -563,6 +580,7 @@ export function Wizard({ graph, config = {} }: WizardProps) {
 			goToNext,
 			goToPrevious,
 			goToPage,
+			skipToPage,
 			updateState,
 			updateStateBatch,
 			getPageState,

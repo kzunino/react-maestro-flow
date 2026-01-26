@@ -1,7 +1,7 @@
 {
 	"name": "react-maestro",
 	"version": "0.0.1",
-	"description": "Graph-based flow orchestration for React. Build branching, stateful user flows from a single entry point.",
+	"description": "Stateful, branching workflow orchestration for React.",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",

@@ -9,9 +9,9 @@ import { useWizardContext } from "@/wizard/WizardContext";
  * Use one import and destructure what you need.
  *
  * @example
- * const { goToNext, goToPrevious, stateKey, currentPage, hasNext, hasPrevious } = useWizard();
+ * const { goToNext, goToPrevious, goToPage, skipToPage, stateKey, currentPage, hasNext, hasPrevious } = useWizard();
  * const [name, setName] = stateKey("name");
- * const [email, setEmail] = stateKey("email");
+ * // goToPage(page) — jump to any node, preserve history (push). skipToPage(page) — same, replace (no back).
  */
 export function useWizard(): UseWizardReturn {
 	const ctx = useWizardContext();

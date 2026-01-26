@@ -964,6 +964,19 @@ function Wizard({ graph, config = {} }) {
     },
     [graph, currentPage, onPageChange, pageParamName, urlParams]
   );
+  const skipToPage = useCallback3(
+    (page) => {
+      if (!graph.nodes.has(page)) {
+        console.warn(`Page "${page}" does not exist in graph`);
+        return;
+      }
+      const previousPage = currentPage;
+      setCurrentPage(page);
+      urlParams.replaceParam(pageParamName, page);
+      onPageChange?.(page, previousPage);
+    },
+    [graph, currentPage, onPageChange, pageParamName, urlParams]
+  );
   const skipCurrentPage = useCallback3(() => {
     if (!currentPage) {
       return;
@@ -1041,6 +1054,7 @@ function Wizard({ graph, config = {} }) {
       goToNext,
       goToPrevious,
       goToPage,
+      skipToPage,
       updateState,
       updateStateBatch,
       getPageState,
@@ -1060,6 +1074,7 @@ function Wizard({ graph, config = {} }) {
       goToNext,
       goToPrevious,
       goToPage,
+      skipToPage,
       updateState,
       updateStateBatch,
       getPageState,
