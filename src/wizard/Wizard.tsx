@@ -6,7 +6,7 @@ import {
 	shouldSkipStep,
 } from "@/wizard/graph";
 import { Presenter } from "@/wizard/Presenter";
-import { defaultStateManager, type WizardStateManager } from "@/wizard/state";
+import { defaultStateManager } from "@/wizard/state";
 import type {
 	ComponentLoader,
 	UrlParamsAdapter,
@@ -26,11 +26,6 @@ export type WizardConfig = {
 	urlParamsAdapter?: UrlParamsAdapter;
 
 	/**
-	 * Optional state manager (defaults to default instance)
-	 */
-	stateManager?: WizardStateManager;
-
-	/**
 	 * Optional URL parameter name for the current page (defaults to "page")
 	 */
 	pageParamName?: string;
@@ -39,11 +34,6 @@ export type WizardConfig = {
 	 * Optional URL parameter name for the wizard UUID (defaults to "id")
 	 */
 	uuidParamName?: string;
-
-	/**
-	 * Optional loading fallback for Presenter
-	 */
-	loadingFallback?: React.ReactNode;
 
 	/**
 	 * Optional unknown page fallback for Presenter
@@ -93,14 +83,14 @@ function generateShortUuid(): string {
 export function Wizard({ graph, config = {} }: WizardProps) {
 	const {
 		urlParamsAdapter,
-		stateManager = defaultStateManager,
 		pageParamName = "page",
 		uuidParamName = "id",
-		loadingFallback,
 		unknownPageFallback,
 		onPageChange,
 		componentLoaders,
 	} = config;
+
+	const stateManager = defaultStateManager;
 
 	// Build component loaders map from graph if not provided
 	const componentLoadersMap = useMemo(() => {
@@ -602,11 +592,10 @@ export function Wizard({ graph, config = {} }: WizardProps) {
 		return null;
 	}
 
-	// Show loader if we're checking if page should be skipped
 	if (isCheckingSkip) {
 		return (
 			<WizardContext.Provider value={contextValue}>
-				{loadingFallback || <div />}
+				<div />
 			</WizardContext.Provider>
 		);
 	}
@@ -617,7 +606,6 @@ export function Wizard({ graph, config = {} }: WizardProps) {
 				page={currentPage}
 				node={currentNode}
 				componentLoaders={componentLoadersMap}
-				loadingFallback={loadingFallback}
 				unknownPageFallback={unknownPageFallback}
 			/>
 		</WizardContext.Provider>

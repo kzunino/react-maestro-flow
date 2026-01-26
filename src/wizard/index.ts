@@ -29,11 +29,6 @@ export {
 	createPathParamsAdapterFromProps,
 	type PathConfig,
 } from "@/wizard/path-params";
-// State management
-export {
-	defaultStateManager,
-	WizardStateManager,
-} from "@/wizard/state";
 export type {
 	NextPageResolver,
 	UrlParamsAdapter,

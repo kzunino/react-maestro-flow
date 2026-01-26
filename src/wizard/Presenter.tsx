@@ -22,35 +22,21 @@ export type PresenterProps = {
 	componentLoaders: Map<string, ComponentLoader>;
 
 	/**
-	 * Optional fallback component to show while loading
-	 */
-	loadingFallback?: React.ReactNode;
-
-	/**
 	 * Optional fallback component to show for unknown pages
 	 */
 	unknownPageFallback?: React.ReactNode;
 };
 
 /**
- * Default loading fallback
- */
-const DefaultLoadingFallback = () => (
-	<div className="flex items-center justify-center p-8">
-		<div className="text-muted-foreground">Loading...</div>
-	</div>
-);
-
-/**
  * Presenter component that dynamically loads and renders wizard pages
  * Uses React.lazy for code splitting and tree shaking
  * Dynamically loads components based on the provided componentLoaders map
+ * Components should handle their own loading states
  */
 export function Presenter({
 	page,
 	node,
 	componentLoaders,
-	loadingFallback = <DefaultLoadingFallback />,
 	unknownPageFallback,
 }: PresenterProps) {
 	// Memoize the lazy-loaded component to prevent remounting on every render
@@ -74,7 +60,7 @@ export function Presenter({
 			return null;
 		}
 		return (
-			<Suspense fallback={loadingFallback}>
+			<Suspense fallback={null}>
 				<Component />
 			</Suspense>
 		);
@@ -96,7 +82,7 @@ export function Presenter({
 	}
 
 	return (
-		<Suspense fallback={loadingFallback}>
+		<Suspense fallback={null}>
 			<Component />
 		</Suspense>
 	);

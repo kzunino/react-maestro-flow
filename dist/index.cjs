@@ -23,12 +23,10 @@ __export(index_exports, {
   Presenter: () => Presenter,
   Wizard: () => Wizard,
   WizardContext: () => WizardContext,
-  WizardStateManager: () => WizardStateManager,
   createPathParamsAdapter: () => createPathParamsAdapter,
   createPathParamsAdapterFromProps: () => createPathParamsAdapterFromProps,
   createWizardGraph: () => createWizardGraph,
   createWizardGraphFromNodes: () => createWizardGraphFromNodes,
-  defaultStateManager: () => defaultStateManager,
   getAllNextPages: () => getAllNextPages,
   getNextNonSkippedPage: () => getNextNonSkippedPage,
   getNextPage: () => getNextPage,
@@ -299,12 +297,10 @@ function useWizard() {
 // src/wizard/Presenter.tsx
 var import_react3 = require("react");
 var import_jsx_runtime = require("react/jsx-runtime");
-var DefaultLoadingFallback = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "flex items-center justify-center p-8", children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "text-muted-foreground", children: "Loading..." }) });
 function Presenter({
   page,
   node,
   componentLoaders,
-  loadingFallback = /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DefaultLoadingFallback, {}),
   unknownPageFallback
 }) {
   const Component = (0, import_react3.useMemo)(() => {
@@ -321,7 +317,7 @@ function Presenter({
     if (!Component) {
       return null;
     }
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react3.Suspense, { fallback: loadingFallback, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Component, {}) });
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react3.Suspense, { fallback: null, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Component, {}) });
   }
   if (!page || !node) {
     return null;
@@ -335,7 +331,7 @@ function Presenter({
       page
     ] }) });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react3.Suspense, { fallback: loadingFallback, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Component, {}) });
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react3.Suspense, { fallback: null, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Component, {}) });
 }
 
 // src/wizard/path-params.ts
@@ -527,6 +523,115 @@ function createPathParamsAdapterFromProps(_pathParams, config) {
   };
 }
 
+// src/wizard/url-params.ts
+var import_react4 = require("react");
+var browserUrlParamsAdapter = {
+  getParam: (key) => {
+    if (typeof window === "undefined") {
+      return null;
+    }
+    const params = new URLSearchParams(window.location.search);
+    return params.get(key);
+  },
+  setParam: (key, value) => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const url = new URL(window.location.href);
+    url.searchParams.set(key, value);
+    window.history.pushState({}, "", url.toString());
+  },
+  replaceParam: (key, value) => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const url = new URL(window.location.href);
+    url.searchParams.set(key, value);
+    window.history.replaceState({}, "", url.toString());
+  },
+  getAllParams: () => {
+    if (typeof window === "undefined") {
+      return {};
+    }
+    const params = new URLSearchParams(window.location.search);
+    const result = {};
+    for (const [key, value] of params.entries()) {
+      result[key] = value;
+    }
+    return result;
+  },
+  replaceParams: (params) => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    const url = new URL(window.location.href);
+    url.search = "";
+    for (const [key, value] of Object.entries(params)) {
+      url.searchParams.set(key, value);
+    }
+    window.history.replaceState({}, "", url.toString());
+  }
+};
+function useUrlParams(adapter = browserUrlParamsAdapter) {
+  const [params, setParams] = (0, import_react4.useState)(
+    () => adapter.getAllParams()
+  );
+  (0, import_react4.useEffect)(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    setParams(adapter.getAllParams());
+    const handlePopState = () => {
+      setParams(adapter.getAllParams());
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [adapter]);
+  const getParam = (0, import_react4.useCallback)(
+    (key) => {
+      return adapter.getParam(key);
+    },
+    [adapter]
+  );
+  const setParam = (0, import_react4.useCallback)(
+    (key, value) => {
+      adapter.setParam(key, value);
+      setParams(adapter.getAllParams());
+    },
+    [adapter]
+  );
+  const replaceParam = (0, import_react4.useCallback)(
+    (key, value) => {
+      adapter.replaceParam(key, value);
+      setParams(adapter.getAllParams());
+    },
+    [adapter]
+  );
+  const getAllParams = (0, import_react4.useCallback)(() => {
+    return adapter.getAllParams();
+  }, [adapter]);
+  const replaceParams = (0, import_react4.useCallback)(
+    (newParams) => {
+      adapter.replaceParams(newParams);
+      setParams(adapter.getAllParams());
+    },
+    [adapter]
+  );
+  return {
+    getParam,
+    setParam,
+    replaceParam,
+    getAllParams,
+    replaceParams,
+    params
+  };
+}
+
+// src/wizard/Wizard.tsx
+var import_react5 = require("react");
+
 // src/wizard/state.ts
 var STORAGE_PREFIX = "wizard:";
 var WizardStateManager = class {
@@ -685,114 +790,7 @@ var WizardStateManager = class {
 };
 var defaultStateManager = new WizardStateManager();
 
-// src/wizard/url-params.ts
-var import_react4 = require("react");
-var browserUrlParamsAdapter = {
-  getParam: (key) => {
-    if (typeof window === "undefined") {
-      return null;
-    }
-    const params = new URLSearchParams(window.location.search);
-    return params.get(key);
-  },
-  setParam: (key, value) => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    const url = new URL(window.location.href);
-    url.searchParams.set(key, value);
-    window.history.pushState({}, "", url.toString());
-  },
-  replaceParam: (key, value) => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    const url = new URL(window.location.href);
-    url.searchParams.set(key, value);
-    window.history.replaceState({}, "", url.toString());
-  },
-  getAllParams: () => {
-    if (typeof window === "undefined") {
-      return {};
-    }
-    const params = new URLSearchParams(window.location.search);
-    const result = {};
-    for (const [key, value] of params.entries()) {
-      result[key] = value;
-    }
-    return result;
-  },
-  replaceParams: (params) => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    const url = new URL(window.location.href);
-    url.search = "";
-    for (const [key, value] of Object.entries(params)) {
-      url.searchParams.set(key, value);
-    }
-    window.history.replaceState({}, "", url.toString());
-  }
-};
-function useUrlParams(adapter = browserUrlParamsAdapter) {
-  const [params, setParams] = (0, import_react4.useState)(
-    () => adapter.getAllParams()
-  );
-  (0, import_react4.useEffect)(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    setParams(adapter.getAllParams());
-    const handlePopState = () => {
-      setParams(adapter.getAllParams());
-    };
-    window.addEventListener("popstate", handlePopState);
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, [adapter]);
-  const getParam = (0, import_react4.useCallback)(
-    (key) => {
-      return adapter.getParam(key);
-    },
-    [adapter]
-  );
-  const setParam = (0, import_react4.useCallback)(
-    (key, value) => {
-      adapter.setParam(key, value);
-      setParams(adapter.getAllParams());
-    },
-    [adapter]
-  );
-  const replaceParam = (0, import_react4.useCallback)(
-    (key, value) => {
-      adapter.replaceParam(key, value);
-      setParams(adapter.getAllParams());
-    },
-    [adapter]
-  );
-  const getAllParams = (0, import_react4.useCallback)(() => {
-    return adapter.getAllParams();
-  }, [adapter]);
-  const replaceParams = (0, import_react4.useCallback)(
-    (newParams) => {
-      adapter.replaceParams(newParams);
-      setParams(adapter.getAllParams());
-    },
-    [adapter]
-  );
-  return {
-    getParam,
-    setParam,
-    replaceParam,
-    getAllParams,
-    replaceParams,
-    params
-  };
-}
-
 // src/wizard/Wizard.tsx
-var import_react5 = require("react");
 var import_jsx_runtime2 = require("react/jsx-runtime");
 function generateShortUuid() {
   const uuid = crypto.randomUUID().replace(/-/g, "");
@@ -801,14 +799,13 @@ function generateShortUuid() {
 function Wizard({ graph, config = {} }) {
   const {
     urlParamsAdapter,
-    stateManager = defaultStateManager,
     pageParamName = "page",
     uuidParamName = "id",
-    loadingFallback,
     unknownPageFallback,
     onPageChange,
     componentLoaders
   } = config;
+  const stateManager = defaultStateManager;
   const componentLoadersMap = (0, import_react5.useMemo)(() => {
     if (componentLoaders) {
       return componentLoaders;
@@ -1140,7 +1137,7 @@ function Wizard({ graph, config = {} }) {
     return null;
   }
   if (isCheckingSkip) {
-    return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(WizardContext.Provider, { value: contextValue, children: loadingFallback || /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", {}) });
+    return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(WizardContext.Provider, { value: contextValue, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", {}) });
   }
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(WizardContext.Provider, { value: contextValue, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
     Presenter,
@@ -1148,7 +1145,6 @@ function Wizard({ graph, config = {} }) {
       page: currentPage,
       node: currentNode,
       componentLoaders: componentLoadersMap,
-      loadingFallback,
       unknownPageFallback
     }
   ) });
@@ -1158,12 +1154,10 @@ function Wizard({ graph, config = {} }) {
   Presenter,
   Wizard,
   WizardContext,
-  WizardStateManager,
   createPathParamsAdapter,
   createPathParamsAdapterFromProps,
   createWizardGraph,
   createWizardGraphFromNodes,
-  defaultStateManager,
   getAllNextPages,
   getNextNonSkippedPage,
   getNextPage,

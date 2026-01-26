@@ -271,10 +271,6 @@ type PresenterProps = {
      */
     componentLoaders: Map<string, ComponentLoader>;
     /**
-     * Optional fallback component to show while loading
-     */
-    loadingFallback?: React.ReactNode;
-    /**
      * Optional fallback component to show for unknown pages
      */
     unknownPageFallback?: React.ReactNode;
@@ -283,8 +279,9 @@ type PresenterProps = {
  * Presenter component that dynamically loads and renders wizard pages
  * Uses React.lazy for code splitting and tree shaking
  * Dynamically loads components based on the provided componentLoaders map
+ * Components should handle their own loading states
  */
-declare function Presenter({ page, node, componentLoaders, loadingFallback, unknownPageFallback, }: PresenterProps): react_jsx_runtime.JSX.Element | null;
+declare function Presenter({ page, node, componentLoaders, unknownPageFallback, }: PresenterProps): react_jsx_runtime.JSX.Element | null;
 
 /**
  * Configuration for path-based URL parameters
@@ -355,68 +352,6 @@ declare function createPathParamsAdapter(config: PathConfig): UrlParamsAdapter;
 declare function createPathParamsAdapterFromProps(_pathParams: Record<string, string | string[]> | Promise<Record<string, string | string[]>>, config: PathConfig): UrlParamsAdapter;
 
 /**
- * Manager for wizard state stored in session storage
- * Uses UUID-based storage with array structure: wizard:{uuid}: [{ page, state }, ...]
- */
-declare class WizardStateManager {
-    private prefix;
-    constructor(prefix?: string);
-    /**
-     * Gets the storage key for a wizard UUID
-     */
-    private getStorageKey;
-    /**
-     * Gets all page state entries for a wizard UUID
-     */
-    private getPageStateEntries;
-    /**
-     * Saves all page state entries for a wizard UUID
-     */
-    private setPageStateEntries;
-    /**
-     * Pre-registers all expected state keys from the graph
-     * This allows us to see all expected state upfront
-     */
-    preRegisterState(graph: WizardGraph, uuid: string): void;
-    /**
-     * Gets state for a specific page
-     */
-    getState(uuid: string, page: string): WizardState;
-    /**
-     * Sets state for a specific page
-     */
-    setState(uuid: string, page: string, key: string, value: unknown): void;
-    /**
-     * Sets multiple state values for a page at once
-     */
-    setStateBatch(uuid: string, page: string, updates: Record<string, unknown>): void;
-    /**
-     * Gets accumulated state from all pages in the graph
-     */
-    getAllState(_graph: WizardGraph, uuid: string): WizardState;
-    /**
-     * Gets state for all pages up to and including the specified page
-     */
-    getStateUpTo(_graph: WizardGraph, uuid: string, page: string): WizardState;
-    /**
-     * Checks if state exists for a specific UUID
-     */
-    hasState(uuid: string): boolean;
-    /**
-     * Clears all wizard state for a specific UUID
-     */
-    clearState(uuid: string): void;
-    /**
-     * Clears state for a specific page within a wizard UUID
-     */
-    clearPageState(uuid: string, page: string): void;
-}
-/**
- * Default instance of WizardStateManager
- */
-declare const defaultStateManager: WizardStateManager;
-
-/**
  * Hook for managing URL parameters in a framework-agnostic way
  */
 declare function useUrlParams(adapter?: UrlParamsAdapter): {
@@ -437,10 +372,6 @@ type WizardConfig = {
      */
     urlParamsAdapter?: UrlParamsAdapter;
     /**
-     * Optional state manager (defaults to default instance)
-     */
-    stateManager?: WizardStateManager;
-    /**
      * Optional URL parameter name for the current page (defaults to "page")
      */
     pageParamName?: string;
@@ -448,10 +379,6 @@ type WizardConfig = {
      * Optional URL parameter name for the wizard UUID (defaults to "id")
      */
     uuidParamName?: string;
-    /**
-     * Optional loading fallback for Presenter
-     */
-    loadingFallback?: React.ReactNode;
     /**
      * Optional unknown page fallback for Presenter
      */
@@ -491,4 +418,4 @@ declare const WizardContext: react.Context<WizardContextValue | null>;
  */
 declare function useWizardContext(): WizardContextValue;
 
-export { type NextPageResolver, type PathConfig, Presenter, type PresenterProps, type UrlParamsAdapter, type UseWizardReturn, Wizard, type WizardConfig, WizardContext, type WizardContextValue, type WizardGraph, type WizardNode, type WizardProps, type WizardState, WizardStateManager, createPathParamsAdapter, createPathParamsAdapterFromProps, createWizardGraph, createWizardGraphFromNodes, defaultStateManager, getAllNextPages, getNextNonSkippedPage, getNextPage, getNode, getPagesInOrder, getPreviousNonSkippedPage, getPreviousPage, registerNode, resolveNextPage, shouldSkipStep, useUrlParams, useWizard, useWizardContext, validateGraph };
+export { type NextPageResolver, type PathConfig, Presenter, type PresenterProps, type UrlParamsAdapter, type UseWizardReturn, Wizard, type WizardConfig, WizardContext, type WizardContextValue, type WizardGraph, type WizardNode, type WizardProps, type WizardState, createPathParamsAdapter, createPathParamsAdapterFromProps, createWizardGraph, createWizardGraphFromNodes, getAllNextPages, getNextNonSkippedPage, getNextPage, getNode, getPagesInOrder, getPreviousNonSkippedPage, getPreviousPage, registerNode, resolveNextPage, shouldSkipStep, useUrlParams, useWizard, useWizardContext, validateGraph };
