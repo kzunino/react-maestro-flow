@@ -364,7 +364,26 @@ declare function useUrlParams(adapter?: UrlParamsAdapter): {
  */
 type WizardConfig = {
     /**
-     * Optional URL params adapter (defaults to browser implementation)
+     * Optional URL params adapter (defaults to browser query params implementation).
+     *
+     * Controls how the wizard reads/writes URL parameters (page, id, etc.).
+     *
+     * - **Omit (default)**: Uses query params like `?page=pageA&id=xyz`
+     * - **Path-based URLs**: Pass `createPathParamsAdapter({ template: "/[id]/page/[page]" })`
+     *   to use path segments like `/test123/page/pageA`
+     * - **Framework adapters**: Use `createPathParamsAdapterFromProps` for Next.js/Remix
+     *   or create a custom adapter for other routing libraries
+     *
+     * @example
+     * ```ts
+     * // Query params (default - no adapter needed)
+     * <Wizard graph={graph} /> // URLs: ?page=pageA&id=xyz
+     *
+     * // Path-based URLs
+     * const adapter = createPathParamsAdapter({ template: "/[id]/page/[page]" });
+     * <Wizard graph={graph} config={{ urlParamsAdapter: adapter }} />
+     * // URLs: /test123/page/pageA
+     * ```
      */
     urlParamsAdapter?: UrlParamsAdapter;
     /**

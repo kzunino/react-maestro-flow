@@ -21,7 +21,26 @@ import { WizardContext } from "@/wizard/WizardContext";
  */
 export type WizardConfig = {
 	/**
-	 * Optional URL params adapter (defaults to browser implementation)
+	 * Optional URL params adapter (defaults to browser query params implementation).
+	 *
+	 * Controls how the wizard reads/writes URL parameters (page, id, etc.).
+	 *
+	 * - **Omit (default)**: Uses query params like `?page=pageA&id=xyz`
+	 * - **Path-based URLs**: Pass `createPathParamsAdapter({ template: "/[id]/page/[page]" })`
+	 *   to use path segments like `/test123/page/pageA`
+	 * - **Framework adapters**: Use `createPathParamsAdapterFromProps` for Next.js/Remix
+	 *   or create a custom adapter for other routing libraries
+	 *
+	 * @example
+	 * ```ts
+	 * // Query params (default - no adapter needed)
+	 * <Wizard graph={graph} /> // URLs: ?page=pageA&id=xyz
+	 *
+	 * // Path-based URLs
+	 * const adapter = createPathParamsAdapter({ template: "/[id]/page/[page]" });
+	 * <Wizard graph={graph} config={{ urlParamsAdapter: adapter }} />
+	 * // URLs: /test123/page/pageA
+	 * ```
 	 */
 	urlParamsAdapter?: UrlParamsAdapter;
 
@@ -291,11 +310,15 @@ export function Wizard({ graph, config = {} }: WizardProps) {
 		} else if (!urlPage) {
 			// If URL has no page param, sync to entry point
 			if (entryPoint && entryPoint !== currentPage) {
+				const previousPage = currentPage;
 				setCurrentPage(entryPoint);
 				urlParams.setParam(pageParamName, entryPoint);
+				onPageChange?.(entryPoint, previousPage);
 			} else if (!entryPoint && currentPage) {
 				// No entry point and no URL param, clear current page
+				const previousPage = currentPage;
 				setCurrentPage(null);
+				onPageChange?.(null, previousPage);
 			}
 		}
 	}, [

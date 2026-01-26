@@ -866,10 +866,14 @@ function Wizard({ graph, config = {} }) {
       }
     } else if (!urlPage) {
       if (entryPoint && entryPoint !== currentPage) {
+        const previousPage = currentPage;
         setCurrentPage(entryPoint);
         urlParams.setParam(pageParamName, entryPoint);
+        onPageChange?.(entryPoint, previousPage);
       } else if (!entryPoint && currentPage) {
+        const previousPage = currentPage;
         setCurrentPage(null);
+        onPageChange?.(null, previousPage);
       }
     }
   }, [
