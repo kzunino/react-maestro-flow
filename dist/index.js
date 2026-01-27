@@ -949,7 +949,11 @@ function Wizard({ graph, config = {} }) {
   }, [currentPage, graph, allState, pageParamName, urlParams, onPageChange]);
   const completeWizard = useCallback3(() => {
     stateManager.clearState(wizardUuid);
-  }, [stateManager, wizardUuid]);
+    const remainingParams = { ...urlParams.params };
+    delete remainingParams[pageParamName];
+    delete remainingParams[uuidParamName];
+    urlParams.replaceParams(remainingParams);
+  }, [stateManager, wizardUuid, urlParams, pageParamName, uuidParamName]);
   const updateState = useCallback3(
     (key, value) => {
       if (!currentPage) {

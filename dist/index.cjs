@@ -995,7 +995,11 @@ function Wizard({ graph, config = {} }) {
   }, [currentPage, graph, allState, pageParamName, urlParams, onPageChange]);
   const completeWizard = (0, import_react5.useCallback)(() => {
     stateManager.clearState(wizardUuid);
-  }, [stateManager, wizardUuid]);
+    const remainingParams = { ...urlParams.params };
+    delete remainingParams[pageParamName];
+    delete remainingParams[uuidParamName];
+    urlParams.replaceParams(remainingParams);
+  }, [stateManager, wizardUuid, urlParams, pageParamName, uuidParamName]);
   const updateState = (0, import_react5.useCallback)(
     (key, value) => {
       if (!currentPage) {

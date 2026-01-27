@@ -151,8 +151,9 @@ type WizardContextValue = {
      */
     skipCurrentPage: () => void;
     /**
-     * Complete the wizard and clear state from session storage
-     * The user is responsible for handling navigation/redirect after calling this
+     * Complete the wizard and clear state from session storage and URL params.
+     * Clears the wizard's state data and removes page/id params from the URL.
+     * The user is responsible for handling navigation/redirect after calling this.
      */
     completeWizard: () => void;
     /**
