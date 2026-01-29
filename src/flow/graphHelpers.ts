@@ -1,4 +1,4 @@
-import type { FlowGraph, FlowNode, FlowState } from "@/wizard/types";
+import type { FlowGraph, FlowNode, FlowState } from "@/flow/types";
 
 /**
  * Creates a new empty flow graph
@@ -55,10 +55,7 @@ export function initializeFlow(
 /**
  * Gets a node by its page identifier
  */
-export function getNode(
-	graph: FlowGraph,
-	page: string,
-): FlowNode | undefined {
+export function getNode(graph: FlowGraph, page: string): FlowNode | undefined {
 	return graph.nodes.get(page);
 }
 

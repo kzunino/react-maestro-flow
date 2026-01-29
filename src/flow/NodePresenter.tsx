@@ -1,5 +1,5 @@
 import { lazy, Suspense, useMemo } from "react";
-import type { ComponentLoader, FlowNode } from "@/wizard/types";
+import type { ComponentLoader, FlowNode } from "@/flow/types";
 
 /**
  * Props for the Presenter component

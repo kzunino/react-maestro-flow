@@ -1,22 +1,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FlowContext } from "@/flow/FlowContext";
+import { defaultStateManager } from "@/flow/flowStateManagers";
 import {
 	getNextPage,
 	getNode,
 	getPreviousPage,
 	resolveNextPage,
 	shouldSkipStep,
-} from "@/wizard/graph";
-import { Presenter } from "@/wizard/Presenter";
-import { defaultStateManager } from "@/wizard/state";
+} from "@/flow/graphHelpers";
+import { Presenter } from "@/flow/NodePresenter";
 import type {
 	ComponentLoader,
 	FlowContextValue,
 	FlowGraph,
 	FlowState,
 	UrlParamsAdapter,
-} from "@/wizard/types";
-import { useUrlParams } from "@/wizard/url-params";
-import { FlowContext } from "@/wizard/FlowContext";
+} from "@/flow/types";
+import { useUrlParams } from "@/flow/useURLParams";
 
 /**
  * Configuration options for the Flow component
@@ -256,9 +256,7 @@ export function Flow({ graph, config = {} }: FlowProps) {
 		const urlPage = urlParams.params[pageParamName] ?? null;
 		const entryPoint = graph.entryPoint || null;
 		const isEntryPoint = urlPage === entryPoint;
-		const uuidExists = enableState
-			? stateManager.hasState(flowUuid)
-			: false;
+		const uuidExists = enableState ? stateManager.hasState(flowUuid) : false;
 
 		// Check page existence first: unknown page → not found (regardless of UUID state)
 		if (urlPage && !graph.nodes.has(urlPage)) {
@@ -522,7 +520,8 @@ export function Flow({ graph, config = {} }: FlowProps) {
 				setMemoryEntries((prev) => {
 					const next = [...prev];
 					const i = next.findIndex((e) => e.page === currentPage);
-					const entry = i >= 0 ? { ...next[i] } : { page: currentPage, state: {} };
+					const entry =
+						i >= 0 ? { ...next[i] } : { page: currentPage, state: {} };
 					entry.state = { ...entry.state, [key]: value };
 					if (i >= 0) next[i] = entry;
 					else next.push(entry);
@@ -543,7 +542,8 @@ export function Flow({ graph, config = {} }: FlowProps) {
 				setMemoryEntries((prev) => {
 					const next = [...prev];
 					const i = next.findIndex((e) => e.page === currentPage);
-					const entry = i >= 0 ? { ...next[i] } : { page: currentPage, state: {} };
+					const entry =
+						i >= 0 ? { ...next[i] } : { page: currentPage, state: {} };
 					entry.state = { ...entry.state, ...updates };
 					if (i >= 0) next[i] = entry;
 					else next.push(entry);

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import type { UrlParamsAdapter } from "@/wizard/types";
+import type { UrlParamsAdapter } from "@/flow/types";
 
 /**
  * Default browser-based URL params adapter

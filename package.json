@@ -19,7 +19,8 @@
 		"build": "tsup",
 		"dev": "tsup --watch",
 		"prepublishOnly": "npm run build",
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "vitest run",
+		"test:watch": "vitest",
 		"playground": "npm run build && cd playground && npm run dev",
 		"playground:install": "cd playground && npm install"
 	},
@@ -34,7 +35,17 @@
 		"react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
 	},
 	"devDependencies": {
-		"tsup": "^8.5.1"
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/react": "^16.0.1",
+		"@testing-library/user-event": "^14.5.2",
+		"@types/node": "^22.10.1",
+		"@types/react": "^18.3.12",
+		"@types/react-dom": "^18.3.1",
+		"jsdom": "^25.0.1",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"tsup": "^8.5.1",
+		"vitest": "^2.1.6"
 	},
 	"type": "module"
 }

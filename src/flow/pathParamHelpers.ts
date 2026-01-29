@@ -1,4 +1,4 @@
-import type { UrlParamsAdapter } from "@/wizard/types";
+import type { UrlParamsAdapter } from "@/flow/types";
 
 /**
  * Configuration for path-based URL parameters

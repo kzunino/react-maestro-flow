@@ -1,4 +1,16 @@
 // Graph orchestration
+
+// Main Flow component
+export {
+	Flow,
+	type FlowConfig,
+	type FlowProps,
+} from "@/flow/Flow";
+// Context
+export {
+	FlowContext,
+	useFlowContext,
+} from "@/flow/FlowContext";
 export {
 	createFlowGraph,
 	getAllNextPages,
@@ -13,20 +25,18 @@ export {
 	resolveNextPage,
 	shouldSkipStep,
 	validateGraph,
-} from "@/wizard/graph";
-// Hooks
-export { useFlow } from "@/wizard/hooks";
+} from "@/flow/graphHelpers";
 // Presenter
 export {
 	Presenter,
 	type PresenterProps,
-} from "@/wizard/Presenter";
+} from "@/flow/NodePresenter";
 // Path params (for dynamic URL segments)
 export {
 	createPathParamsAdapter,
 	createPathParamsAdapterFromProps,
 	type PathConfig,
-} from "@/wizard/path-params";
+} from "@/flow/pathParamHelpers";
 export type {
 	FlowContextValue,
 	FlowGraph,
@@ -35,17 +45,7 @@ export type {
 	NextPageResolver,
 	UrlParamsAdapter,
 	UseFlowReturn,
-} from "@/wizard/types";
-// URL params
-export { useUrlParams } from "@/wizard/url-params";
-// Main Flow component
-export {
-	Flow,
-	type FlowConfig,
-	type FlowProps,
-} from "@/wizard/Flow";
-// Context
-export {
-	FlowContext,
-	useFlowContext,
-} from "@/wizard/FlowContext";
+} from "@/flow/types";
+// Hooks
+export { useFlow } from "@/flow/useFlow";
+export { useUrlParams } from "@/flow/useURLParams";

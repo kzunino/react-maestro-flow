@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { FlowContextValue } from "@/wizard/types";
+import type { FlowContextValue } from "@/flow/types";
 
 /**
  * React context for flow state and navigation

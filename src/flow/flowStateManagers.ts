@@ -1,5 +1,5 @@
-import { getPagesInOrder } from "@/wizard/graph";
-import type { FlowGraph, FlowState } from "@/wizard/types";
+import { getPagesInOrder } from "@/flow/graphHelpers";
+import type { FlowGraph, FlowState } from "@/flow/types";
 
 /**
  * Session storage key prefix for flow state

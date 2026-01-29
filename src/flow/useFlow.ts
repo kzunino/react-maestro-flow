@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback } from "react";
-import type { UseFlowReturn } from "@/wizard/types";
-import { useFlowContext } from "@/wizard/FlowContext";
+import { useFlowContext } from "@/flow/FlowContext";
+import type { UseFlowReturn } from "@/flow/types";
 
 /**
  * Single hook to access all flow functionality.
