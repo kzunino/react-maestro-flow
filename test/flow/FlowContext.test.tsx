@@ -22,7 +22,6 @@ describe("FlowContext", () => {
 			getCurrentNode: () => undefined,
 			getNode: () => undefined,
 			hasNext: () => false,
-			hasPrevious: () => false,
 			skipCurrentPage: () => {},
 			completeFlow: () => {},
 			getUrlParam: () => null,

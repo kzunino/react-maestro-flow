@@ -28,8 +28,8 @@ export type FlowNode<TState = FlowState> = {
 	nextPage?: NextPageResolver<TState>;
 
 	/**
-	 * Optional previous page identifier. Used as fallback for hasPrevious and
-	 * when resolving previous non-skipped pages. Back navigation uses browser
+	 * Optional previous page identifier. Used when resolving previous non-skipped
+	 * pages (e.g. skip chain). Back navigation uses browser
 	 * history by default.
 	 */
 	previousPageFallback?: string;
@@ -103,7 +103,9 @@ export type FlowContextValue = {
 	currentPage: string | null;
 
 	/**
-	 * Current accumulated state from all steps
+	 * Merged state from all pages (later pages override earlier).
+	 * Used by nextPage/shouldSkip for conditional routing.
+	 * For page-local data, use stateKey() or getPageState(page).
 	 */
 	state: FlowState;
 
@@ -144,7 +146,8 @@ export type FlowContextValue = {
 	updateStateBatch: (updates: Record<string, unknown>) => void;
 
 	/**
-	 * Get state for a specific page
+	 * Get state for a specific page (page-scoped, no merge).
+	 * Use this when you need another page's data or to avoid key collisions.
 	 */
 	getPageState: (page: string) => FlowState;
 
@@ -162,11 +165,6 @@ export type FlowContextValue = {
 	 * Check if there is a next page available
 	 */
 	hasNext: () => boolean;
-
-	/**
-	 * Check if there is a previous page available
-	 */
-	hasPrevious: () => boolean;
 
 	/**
 	 * Skip the current page and navigate to the next non-skipped page
@@ -200,18 +198,16 @@ export type FlowContextValue = {
 
 /**
  * Return type of useFlow().
- * Extends FlowContextValue with stateKey helper and hasNext/hasPrevious as booleans.
+ * Extends FlowContextValue with stateKey helper and hasNext as boolean.
  */
 export type UseFlowReturn = Omit<
 	FlowContextValue,
-	"hasNext" | "hasPrevious"
+	"hasNext"
 > & {
-	/** Get [value, setValue] for a state key. */
+	/** Get [value, setValue] for a state key. Page-scoped: each page has its own namespace, so keys like "name" or "email" won't collide across pages. */
 	stateKey: <T = unknown>(
 		key: string,
 	) => readonly [T | undefined, (value: T) => void];
 	/** Whether there is a next page (resolved boolean). */
 	hasNext: boolean;
-	/** Whether there is a previous page (resolved boolean). */
-	hasPrevious: boolean;
 };

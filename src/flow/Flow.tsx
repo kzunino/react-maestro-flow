@@ -587,18 +587,6 @@ export function Flow({ graph, config = {} }: FlowProps) {
 		return getNextPage(graph, currentPage, allState) !== null;
 	}, [graph, currentPage, allState]);
 
-	const hasPrevious = useCallback(() => {
-		if (!currentPage) {
-			return false;
-		}
-		// Check if there's browser history to go back to
-		if (typeof window !== "undefined" && window.history.length > 1) {
-			return true;
-		}
-		// Fallback to graph-based check
-		return getPreviousPage(graph, currentPage, allState) !== null;
-	}, [graph, currentPage, allState]);
-
 	// Build context value
 	const contextValue: FlowContextValue = useMemo(
 		() => ({
@@ -614,7 +602,6 @@ export function Flow({ graph, config = {} }: FlowProps) {
 			getCurrentNode,
 			getNode: getNodeByPage,
 			hasNext,
-			hasPrevious,
 			skipCurrentPage,
 			completeFlow,
 			getUrlParam: urlParams.getParam,
@@ -634,7 +621,6 @@ export function Flow({ graph, config = {} }: FlowProps) {
 			getCurrentNode,
 			getNodeByPage,
 			hasNext,
-			hasPrevious,
 			skipCurrentPage,
 			completeFlow,
 			urlParams,

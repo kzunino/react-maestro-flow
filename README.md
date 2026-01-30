@@ -146,7 +146,7 @@ Each node in your graph can have:
   // - A function: (state) => state.condition ? "pageA" : "pageB"
   
   previousPageFallback?: string;
-  // Optional: Fallback previous page for hasPrevious() checks
+  // Optional: Fallback when resolving previous non-skipped pages
   // (Back navigation uses browser history by default)
   
   shouldSkip?: (state: FlowState) => boolean;
@@ -179,7 +179,6 @@ const {
   
   // Navigation info
   hasNext: boolean,
-  hasPrevious: boolean,
   
   // Utilities
   getCurrentNode: () => FlowNode | undefined,

@@ -4,14 +4,13 @@ import { FlowContext } from "@/flow/FlowContext";
 import { useFlow } from "@/flow/useFlow";
 
 function Consumer() {
-	const { stateKey, hasNext, hasPrevious, currentPage } = useFlow();
+	const { stateKey, hasNext, currentPage } = useFlow();
 	const [name, setName] = stateKey<string>("name");
 	return (
 		<div data-testid="consumer">
 			<span data-testid="page">{currentPage ?? "none"}</span>
 			<span data-testid="name">{String(name ?? "")}</span>
 			<span data-testid="hasNext">{String(hasNext)}</span>
-			<span data-testid="hasPrevious">{String(hasPrevious)}</span>
 			<button
 				type="button"
 				onClick={() => setName("Alice")}
@@ -37,11 +36,11 @@ describe("useFlow", () => {
 		skipToPage: () => {},
 		updateState: (key: string, value: unknown) => {},
 		updateStateBatch: () => {},
-		getPageState: () => ({}),
+		getPageState: (page: string) =>
+			page === "step1" ? { name: "Bob" } : {},
 		getCurrentNode: () => undefined,
 		getNode: () => undefined,
 		hasNext: () => true,
-		hasPrevious: () => false,
 		skipCurrentPage: () => {},
 		completeFlow: () => {},
 		getUrlParam: () => null,
@@ -60,7 +59,7 @@ describe("useFlow", () => {
 		expect(scope.getByTestId("name")).toHaveTextContent("Bob");
 	});
 
-	it("exposes hasNext and hasPrevious as booleans", () => {
+	it("exposes hasNext as boolean", () => {
 		render(
 			<FlowContext.Provider value={mockValue}>
 				<Consumer />
@@ -68,7 +67,6 @@ describe("useFlow", () => {
 		);
 		const scope = within(screen.getAllByTestId("consumer")[0]);
 		expect(scope.getByTestId("hasNext")).toHaveTextContent("true");
-		expect(scope.getByTestId("hasPrevious")).toHaveTextContent("false");
 	});
 
 	it("stateKey returns [value, setValue] and setValue calls updateState", () => {
