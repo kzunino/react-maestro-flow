@@ -26,10 +26,23 @@
 	},
 	"keywords": [
 		"react",
-		"library"
+		"workflow",
+		"wizard",
+		"multi-step",
+		"forms",
+		"flow",
+		"orchestration"
 	],
 	"author": "",
 	"license": "ISC",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kylezunino/react-maestro"
+	},
+	"homepage": "https://github.com/kylezunino/react-maestro#readme",
+	"bugs": {
+		"url": "https://github.com/kylezunino/react-maestro/issues"
+	},
 	"peerDependencies": {
 		"react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
 		"react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
