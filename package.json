@@ -1,7 +1,7 @@
 {
 	"name": "react-maestro-flow",
 	"author": "Kyle <kzunino@gmail.com>",
-	"version": "0.5.2",
+	"version": "0.5.3",
 	"description": "Stateful, branching workflow orchestration for React.",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
