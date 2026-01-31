@@ -1,5 +1,6 @@
 {
 	"name": "react-maestro",
+	"author": "Kyle <kzunino@gmail.com>",
 	"version": "0.5.1",
 	"description": "Stateful, branching workflow orchestration for React.",
 	"main": "./dist/index.cjs",
@@ -33,7 +34,6 @@
 		"flow",
 		"orchestration"
 	],
-	"author": "",
 	"license": "ISC",
 	"repository": {
 		"type": "git",
