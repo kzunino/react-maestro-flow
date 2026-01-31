@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Auto-merge minor/patch updates
         if: github.actor == 'dependabot[bot]' || github.event_name == 'check_suite'
-        uses: pascalgn/automerge-action@v0.18.0
+        uses: pascalgn/automerge-action@v0.16.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Only merge Dependabot PRs (minor/patch per dependabot.yml)
