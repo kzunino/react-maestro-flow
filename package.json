@@ -1,5 +1,5 @@
 {
-	"name": "react-flow-kit",
+	"name": "react-maestro-flow",
 	"author": "Kyle <kzunino@gmail.com>",
 	"version": "0.5.2",
 	"description": "Stateful, branching workflow orchestration for React.",
@@ -37,11 +37,11 @@
 	"license": "ISC",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/kylezunino/react-flow-kit.git"
+		"url": "git+https://github.com/kylezunino/react-maestr-flow.git"
 	},
-	"homepage": "https://github.com/kylezunino/react-flow-kit#readme",
+	"homepage": "https://github.com/kylezunino/react-maestro-flow#readme",
 	"bugs": {
-		"url": "https://github.com/kylezunino/react-flow-kit/issues"
+		"url": "https://github.com/kylezunino/react-maestro-flow/issues"
 	},
 	"peerDependencies": {
 		"react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",

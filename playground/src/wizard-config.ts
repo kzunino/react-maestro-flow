@@ -1,5 +1,5 @@
-import type { FlowGraph, FlowNode } from "react-flow-kit";
-import { initializeFlow } from "react-flow-kit";
+import type { FlowGraph, FlowNode } from "react-maestro-flow";
+import { initializeFlow } from "react-maestro-flow";
 
 enum Page {
 	PageA = "pageA",

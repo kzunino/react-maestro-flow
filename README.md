@@ -1,4 +1,4 @@
-# react-flow-kit
+# react-maestro-flow
 
 Stateful, branching workflow orchestration for React.
 
@@ -17,13 +17,13 @@ Build complex, multi-step user flows with automatic state management, URL synchr
 ## Installation
 
 ```bash
-npm install react-flow-kit
+npm install react-maestro-flow
 ```
 
 ## Quick Start
 
 ```tsx
-import { Flow, initializeFlow, useFlow } from "react-flow-kit";
+import { Flow, initializeFlow, useFlow } from "react-maestro-flow";
 
 // 1. Define your pages as nodes
 const nodes = [
@@ -289,7 +289,7 @@ const {userId, type} = urlParams;
 ### Path-Based URLs (Next.js, Remix, etc.)
 
 ```tsx
-import { createPathParamsAdapter, Flow } from "react-flow-kit";
+import { createPathParamsAdapter, Flow } from "react-maestro-flow";
 
 // For Next.js App Router
 const adapter = createPathParamsAdapterFromProps(

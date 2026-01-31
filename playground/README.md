@@ -1,6 +1,6 @@
 # React Maestro · Playground
 
-Vite + React + Tailwind playground to test **react-flow-kit** locally. Uses the full test wizard with branching logic. Not part of the published package.
+Vite + React + Tailwind playground to test **react-maestro-flow** locally. Uses the full test wizard with branching logic. Not part of the published package.
 
 ## Setup
 
@@ -25,7 +25,7 @@ cd playground && npm install && npm run dev
 - **All test pages** – PageA, PageB, PageC, PageD, PageE with branching logic
 - **Tailwind CSS** – Styled components matching the test pages
 - **Button component** – Simple Button component for navigation
-- **react-flow-kit** – consumed via `file:..` (parent directory). Not a published dependency.
+- **react-maestro-flow** – consumed via `file:..` (parent directory). Not a published dependency.
 
 ## Test Flow
 
