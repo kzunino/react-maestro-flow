@@ -18,7 +18,10 @@ export default function PageC() {
 
 			<div className="space-y-4">
 				<div>
-					<label htmlFor="pageC-name" className="block text-sm font-medium mb-1">
+					<label
+						htmlFor="pageC-name"
+						className="block text-sm font-medium mb-1"
+					>
 						Nickname / Display name
 					</label>
 					<input

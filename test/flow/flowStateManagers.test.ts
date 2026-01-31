@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
-import { initializeFlow } from "@/flow/graphHelpers";
 import { WizardStateManager } from "@/flow/flowStateManagers";
+import { initializeFlow } from "@/flow/graphHelpers";
+import { describe, expect, it } from "vitest";
 
 describe("flowStateManagers", () => {
 	const graph = initializeFlow(

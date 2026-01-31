@@ -1,7 +1,7 @@
-import { cleanup, render, screen, within } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
 import { FlowContext } from "@/flow/FlowContext";
 import { useFlow } from "@/flow/useFlow";
+import { cleanup, render, screen, within } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 function Consumer() {
 	const { stateKey, hasNext, currentPage } = useFlow();
@@ -29,15 +29,17 @@ describe("useFlow", () => {
 
 	const mockValue = {
 		currentPage: "step1",
-		state: { step1: { name: "Bob" } } as Record<string, Record<string, unknown>>,
+		state: { step1: { name: "Bob" } } as Record<
+			string,
+			Record<string, unknown>
+		>,
 		goToNext: () => {},
 		goToPrevious: () => {},
 		goToPage: () => {},
 		skipToPage: () => {},
-		updateState: (key: string, value: unknown) => {},
+		updateState: (_key: string, _value: unknown) => {},
 		updateStateBatch: () => {},
-		getPageState: (page: string) =>
-			page === "step1" ? { name: "Bob" } : {},
+		getPageState: (page: string) => (page === "step1" ? { name: "Bob" } : {}),
 		getCurrentNode: () => undefined,
 		getNode: () => undefined,
 		hasNext: () => true,

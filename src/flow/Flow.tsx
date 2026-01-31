@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FlowContext } from "@/flow/FlowContext";
+import { Presenter } from "@/flow/NodePresenter";
 import { defaultStateManager } from "@/flow/flowStateManagers";
 import {
 	getNextPage,
@@ -8,7 +8,6 @@ import {
 	resolveNextPage,
 	shouldSkipStep,
 } from "@/flow/graphHelpers";
-import { Presenter } from "@/flow/NodePresenter";
 import type {
 	ComponentLoader,
 	FlowContextValue,
@@ -18,6 +17,7 @@ import type {
 	UrlParamsAdapter,
 } from "@/flow/types";
 import { useUrlParams } from "@/flow/useURLParams";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * Configuration options for the Flow component
@@ -125,13 +125,16 @@ export function Flow({ graph, config = {} }: FlowProps) {
 	type PageStateEntry = { page: string; state: FlowState };
 	const [memoryEntries, setMemoryEntries] = useState<PageStateEntry[]>([]);
 
-	const mergeEntries = useCallback((entries: PageStateEntry[]): FlowStateByPage => {
-		const byPage: FlowStateByPage = {};
-		for (const e of entries) {
-			byPage[e.page] = { ...e.state };
-		}
-		return byPage;
-	}, []);
+	const mergeEntries = useCallback(
+		(entries: PageStateEntry[]): FlowStateByPage => {
+			const byPage: FlowStateByPage = {};
+			for (const e of entries) {
+				byPage[e.page] = { ...e.state };
+			}
+			return byPage;
+		},
+		[],
+	);
 
 	// Build component loaders map from graph if not provided
 	const componentLoadersMap = useMemo(() => {

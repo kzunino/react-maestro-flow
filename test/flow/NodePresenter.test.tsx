@@ -1,6 +1,6 @@
+import { Presenter } from "@/flow/NodePresenter";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Presenter } from "@/flow/NodePresenter";
 
 function DummyPage() {
 	return <div data-testid="dummy-page">Dummy</div>;
@@ -9,11 +9,7 @@ function DummyPage() {
 describe("NodePresenter", () => {
 	it("returns null when page is null", () => {
 		const { container } = render(
-			<Presenter
-				page={null}
-				node={undefined}
-				componentLoaders={new Map()}
-			/>,
+			<Presenter page={null} node={undefined} componentLoaders={new Map()} />,
 		);
 		expect(container.firstChild).toBeNull();
 	});

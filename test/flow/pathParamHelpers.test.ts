@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createPathParamsAdapter } from "@/flow/pathParamHelpers";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("pathParamHelpers", () => {
 	const originalLocation = window.location;

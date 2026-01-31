@@ -17,7 +17,9 @@ export default function Landing() {
 
 				<div className="space-y-4">
 					<div className="p-4 border rounded-md">
-						<h2 className="text-xl font-semibold mb-2">Query Params (Default)</h2>
+						<h2 className="text-xl font-semibold mb-2">
+							Query Params (Default)
+						</h2>
 						<p className="text-sm text-muted-foreground mb-3">
 							Uses query parameters: <code>?page=pageA&id=abc123</code>
 						</p>
@@ -45,7 +47,9 @@ export default function Landing() {
 							<br />
 							Example: <code>/xyz789/premium/feature1/pageA</code>
 						</p>
-						<Button onClick={() => handleRoute("/xyz789/premium/feature1/pageA")}>
+						<Button
+							onClick={() => handleRoute("/xyz789/premium/feature1/pageA")}
+						>
 							Test /[id]/[type]/[someOtherOptions]/[page]
 						</Button>
 					</div>

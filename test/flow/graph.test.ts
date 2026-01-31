@@ -1,7 +1,6 @@
-import { describe, expect, it } from "vitest";
 import {
-	getNextPage,
 	getNextNonSkippedPage,
+	getNextPage,
 	getNode,
 	getPagesInOrder,
 	getPreviousPage,
@@ -11,6 +10,7 @@ import {
 	shouldSkipStep,
 	validateGraph,
 } from "@/flow/graphHelpers";
+import { describe, expect, it } from "vitest";
 
 describe("graphHelpers", () => {
 	it("initializeFlow creates graph from nodes and sets entry point", () => {

@@ -1,0 +1,30 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.0/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"noUnusedImports": "warn",
+				"noUnusedVariables": "warn"
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2
+	},
+	"files": {
+		"ignore": [
+			"node_modules",
+			"dist",
+			"playground/dist",
+			"*.config.js",
+			"*.config.ts"
+		]
+	}
+}

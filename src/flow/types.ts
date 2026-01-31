@@ -207,10 +207,7 @@ export type FlowContextValue = {
  * Return type of useFlow().
  * Extends FlowContextValue with stateKey helper and hasNext as boolean.
  */
-export type UseFlowReturn = Omit<
-	FlowContextValue,
-	"hasNext"
-> & {
+export type UseFlowReturn = Omit<FlowContextValue, "hasNext"> & {
 	/** Get [value, setValue] for a state key. Page-scoped: each page has its own namespace, so keys like "name" or "email" won't collide across pages. */
 	stateKey: <T = unknown>(
 		key: string,

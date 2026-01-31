@@ -1,6 +1,6 @@
+import { FlowContext, useFlowContext } from "@/flow/FlowContext";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { FlowContext, useFlowContext } from "@/flow/FlowContext";
 
 function Consumer() {
 	const ctx = useFlowContext();
