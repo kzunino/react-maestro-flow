@@ -60,5 +60,8 @@
 		"tsup": "^8.5.1",
 		"vitest": "^2.1.6"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"typescript": "^5.9.3"
+	}
 }
