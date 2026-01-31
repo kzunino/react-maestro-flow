@@ -1,5 +1,10 @@
 # react-maestro-flow
 
+[![CI](https://github.com/kylezunino/react-maestro-flow/actions/workflows/ci.yml/badge.svg)](https://github.com/kylezunino/react-maestro-flow/actions)
+[![npm version](https://img.shields.io/npm/v/react-maestro-flow.svg)](https://www.npmjs.com/package/react-maestro-flow)
+[![npm downloads](https://img.shields.io/npm/dm/react-maestro-flow.svg)](https://www.npmjs.com/package/react-maestro-flow)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+
 Stateful, branching workflow orchestration for React.
 
 Build complex, multi-step user flows with automatic state management, URL synchronization, and conditional navigation.
